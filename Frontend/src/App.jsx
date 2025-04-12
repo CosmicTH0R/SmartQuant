@@ -14,6 +14,7 @@ import Wallet from "./pages/Wallet";
 import ResetPassword from "./components/ResetPassword";
 import Profile from "./pages/Profile";
 import HowItWorks from "./pages/HowitWorks";
+import GetStarted from "./pages/GetStarted";
 
 function App() {
   const darkMode = useSelector((state) => state.theme.darkMode);
@@ -40,6 +41,7 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
+        <Route path="/get-started" element={<GetStarted />} />
       </Routes>
       <ToastContainer position="top-center" />
     </div>

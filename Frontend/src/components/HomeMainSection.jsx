@@ -20,9 +20,11 @@ const HomeMainSection = () => {
             investment decisions with ease.
           </p>
           <div className="mt-8 flex items-center gap-6">
+            <Link to="/get-started">
             <button className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-full transition">
               Get Started
             </button>
+            </Link>
             <Link to="/how-it-works">
               <button className="text-gray-900 dark:text-white hover:underline font-medium flex items-center gap-2">
                 How It Works <span className="text-green-400">→</span>
