@@ -85,7 +85,7 @@ const SignIn = () => {
             <button
               className="text-sm text-blue-600 dark:text-blue-400 hover:underline"
               type="button"
-              onClick={() => navigate("/reset-password")}
+              onClick={() => navigate("/forgot-password")}
             >
               Forgot password?
             </button>

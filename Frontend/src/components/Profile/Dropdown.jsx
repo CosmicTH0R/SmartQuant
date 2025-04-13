@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Settings, ClipboardList, Headphones, FileText } from "lucide-react";
-import ThemeToggle from "../ThemeToggle"; // adjust path if needed
+import ThemeToggle from "../ThemeToggle";
+import { toast } from "react-toastify";
 
 const ProfileDropdown = () => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -9,10 +10,27 @@ const ProfileDropdown = () => {
 
   const toggleDropdown = () => setShowDropdown((prev) => !prev);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    navigate("/");
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/logout", {
+        method: "POST",
+        credentials: "include", // Cookie bhejne ke liye
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        toast.success(data.message || "Logout successful!");
+      
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);       
+      } else {
+        toast.error(data.message || "Logout failed.");
+      }
+    } catch (err) {
+      toast.error("Something went wrong!");
+    }
   };
 
   return (
@@ -57,12 +75,12 @@ const ProfileDropdown = () => {
 
           <div className="flex justify-between items-center text-sm text-gray-600 dark:text-gray-300">
             <ThemeToggle />
-            <span
+            <button
               onClick={handleLogout}
               className="cursor-pointer hover:text-red-500"
             >
-              Log out
-            </span>
+              Logout
+            </button>
           </div>
         </div>
       )}

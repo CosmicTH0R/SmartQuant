@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 
-
 // Pages
 import Home from "./pages/Home";
 import SignIn from "./pages/SignIn";
@@ -11,10 +10,12 @@ import SignUp from "./pages/SignUp";
 import Explore from "./pages/Explore";
 import Dashboard from "./pages/Dashboard";
 import Wallet from "./pages/Wallet";
-import ResetPassword from "./components/ResetPassword";
 import Profile from "./pages/Profile";
 import HowItWorks from "./pages/HowitWorks";
 import GetStarted from "./pages/GetStarted";
+import StockDetail from "./pages/StockDetail";
+import ResetPasswordForm from "./components/ResetPasswordForm";
+import ForgotPasswordForm from "./components/ForgotPasswordForm";
 
 function App() {
   const darkMode = useSelector((state) => state.theme.darkMode);
@@ -38,10 +39,12 @@ function App() {
         <Route path="/explore" element={<Explore />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/wallet" element={<Wallet />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/forgot-password" element={<ForgotPasswordForm />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/get-started" element={<GetStarted />} />
+        <Route path="/stocks/:symbol" element={<StockDetail />} />
+        <Route path="/reset-password/:token" element={<ResetPasswordForm />} />
       </Routes>
       <ToastContainer position="top-center" />
     </div>
