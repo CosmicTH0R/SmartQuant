@@ -16,6 +16,7 @@ import GetStarted from "./pages/GetStarted";
 import StockDetail from "./pages/StockDetail";
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
+import Cart from "./pages/Cart";
 
 function App() {
   const darkMode = useSelector((state) => state.theme.darkMode);
@@ -39,6 +40,7 @@ function App() {
         <Route path="/explore" element={<Explore />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/wallet" element={<Wallet />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/forgot-password" element={<ForgotPasswordForm />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/how-it-works" element={<HowItWorks />} />

@@ -1,41 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sun, Moon, Bell, Wallet, ShoppingCart, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../Redux/ThemeSlice";
+import { NavLink } from "react-router-dom";
 import ProfileDropdown from "./Profile/Dropdown";
+import SearchBar from "./SearchBar";
+import NotificationDropdown from "./NotificationDropdown";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const darkMode = useSelector((state) => state.theme.darkMode);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
     <div className="flex items-center justify-between px-6 py-3 shadow-md transition-colors duration-300 bg-white dark:bg-gray-900 text-black dark:text-white">
       {/* Logo + Nav Links */}
       <div className="flex items-center gap-2">
-        <div className="bg-gradient-to-tr from-blue-500 to-green-400 w-8 h-8 rounded-full text-center text-xl text-fuchsia-600 flex items-center justify-center">
-          Sq
+        {/* Logo */}
+        <div className="flex items-center space-x-2">
+          <img
+            src="/favicon-32x32.png"
+            alt="SmartQuant Logo"
+            className="w-6 h-6 rounded-md"
+          />
+          <span>SmartQuant</span>
         </div>
-        <span className="text-xl font-semibold">SmartQuant</span>
+
         <nav className="ml-6 flex gap-4">
-          <Link to="/explore" className="hover:text-blue-400">
+          <NavLink
+            to="/explore"
+            className={({ isActive }) =>
+              isActive ? "text-blue-500 font-semibold" : "hover:text-blue-400"
+            }
+          >
             Explore
-          </Link>
-          <Link to="/dashboard" className="hover:text-blue-400 font-semibold">
+          </NavLink>
+          <NavLink
+            to="/dashboard"
+            className={({ isActive }) =>
+              isActive ? "text-blue-500 font-semibold" : "hover:text-blue-400"
+            }
+          >
             Dashboard
-          </Link>
+          </NavLink>
         </nav>
       </div>
 
-      {/* Search */}
-      <div className="flex items-center px-4 py-1 rounded-md w-96 bg-gray-100 dark:bg-neutral-800 text-black dark:text-white">
-        <Search size={18} className="mr-2 text-gray-400" />
-        <input
-          type="text"
-          placeholder="Search SmartQuant..."
-          className="bg-transparent focus:outline-none w-full"
-        />
+      {/* SearchBar for md+ */}
+      <div className="hidden md:flex flex-1 justify-center px-6">
+        <SearchBar />
       </div>
+
+      {/* Mobile Search Toggle */}
+      <div className="md:hidden flex items-center">
+        <button
+          onClick={() => setIsSearchOpen(!isSearchOpen)}
+          className="text-gray-900 dark:text-white p-2 rounded-full"
+        >
+          <Search size={20} />
+        </button>
+      </div>
+
+      {/* Mobile SearchBar */}
+      {isSearchOpen && (
+        <div className="absolute top-16 left-1/2 transform -translate-x-1/2 w-3/4 sm:w-96 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg md:hidden">
+          <SearchBar />
+        </div>
+      )}
 
       {/* Icons */}
       <div className="flex items-center gap-4">
@@ -43,11 +75,14 @@ const Navbar = () => {
           {darkMode ? <Sun size={20} /> : <Moon size={20} />}
         </button>
 
-        <Bell size={20} className="hover:text-blue-400" />
+        <NotificationDropdown />
+
         <Link to="/wallet" className="hover:text-blue-400">
           <Wallet size={20} />
         </Link>
-        <ShoppingCart size={20} className="hover:text-blue-400" />
+        <Link to="/cart" className="hover:text-blue-400">
+          <ShoppingCart size={20} className="hover:text-blue-400" />
+        </Link>
         <ProfileDropdown />
       </div>
     </div>
