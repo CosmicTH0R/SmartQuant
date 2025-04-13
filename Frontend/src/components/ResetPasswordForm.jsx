@@ -7,6 +7,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const ResetPasswordForm = () => {
   const { token } = useParams();
+  // console.log("Reset token from URL:", token);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPass, setShowNewPass] = useState(false);

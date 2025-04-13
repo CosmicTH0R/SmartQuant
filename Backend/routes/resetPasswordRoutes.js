@@ -1,11 +1,14 @@
-import express from 'express';
-import crypto from 'crypto';
-import User from '../models/userSchema.js';
-import sendResetEmail from '../utils/sendResetPassEmail.js'; // Email sender
+
+import express from "express";
+import crypto from "crypto";
+import bcrypt from "bcrypt"; // make sure you import this at the top
+import User from "../models/userSchema.js";
+import sendResetEmail from "../utils/sendResetPassEmail.js"; // Email sender
 
 const router = express.Router();
 
-router.post('/reset-password', async (req, res) => {
+// Route to request reset password (send reset link)
+router.post("/reset-password", async (req, res) => {
   const { email } = req.body;
 
   if (!email) {
@@ -20,10 +23,11 @@ router.post('/reset-password', async (req, res) => {
       return res.status(404).json({ message: "User not found with this email" });
     }
 
-    // Generate and hash reset token
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    // Generate reset token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
 
+    // Save hashed token and expiry time in the database
     user.resetPasswordToken = hashedToken;
     user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
     await user.save();
@@ -42,8 +46,8 @@ router.post('/reset-password', async (req, res) => {
       <p>${resetLink}</p>
     `;
 
+    // Send reset password email
     try {
-      // await sendResetEmail(user.email, resetLink);
       await sendResetEmail(user.email, subject, html);
       console.log("Reset link sent to:", user.email);
     } catch (emailErr) {
@@ -51,11 +55,54 @@ router.post('/reset-password', async (req, res) => {
       return res.status(500).json({ message: "Failed to send reset email. Try again later." });
     }
 
-    return res.status(200).json({ message: 'Reset link sent to email.' });
+    return res.status(200).json({ message: "Reset link sent to email." });
   } catch (err) {
     console.error("Reset password error:", err);
-    return res.status(500).json({ message: 'Server error, please try again later.' });
+    return res.status(500).json({ message: "Server error, please try again later." });
   }
 });
+
+
+// Route to reset password (after clicking the reset link)
+router.post("/reset-password/:token", async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    // Hash the token from URL
+    const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+    // Find user by hashed token and check token expiry
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() }, // Check if token has expired
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    // Basic password validation
+    if (!newPassword || newPassword.length < 8) {
+      return res.status(400).json({ message: "Password must be at least 8 characters long" });
+    }
+
+    // ✅ Hash new password
+    const bcrypt = await import("bcrypt"); // If you're using ES Modules
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Save updated password
+    user.password = hashedPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    return res.status(200).json({ message: "Password successfully reset!" });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Something went wrong!" });
+  }
+});
+
 
 export default router;
