@@ -21,3 +21,6 @@ const ActivityItem = ({ icon, action, date, time }) => {
 };
 
 export default ActivityItem;
+
+
+//using this component in the ActivitySection.jsx file

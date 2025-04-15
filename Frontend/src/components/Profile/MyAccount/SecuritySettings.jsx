@@ -81,3 +81,6 @@ const SecuritySettings = () => {
 };
 
 export default SecuritySettings;
+
+
+//this is a simple security settings component for a user profile page. It includes sections for password management, two-factor authentication, and active sessions. Each section is styled with Tailwind CSS and uses Lucide icons for visual representation. The component is designed to be responsive and user-friendly, providing clear information and actions for the user to manage their account security.

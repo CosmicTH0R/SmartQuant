@@ -41,6 +41,10 @@ const SignIn = () => {
     window.location.href = "http://localhost:5000/api/auth/google"; // Redirect to your Google auth route
   };
 
+  const handleFacebookLogin = () => {
+    window.location.href = "http://localhost:5000/api/auth/facebook"; // Redirect to your Facebook auth route
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-sky-200 to-white dark:from-gray-800 dark:to-black transition-colors">
       <div className="rounded-3xl shadow-xl p-8 w-[90%] max-w-md backdrop-blur-md bg-gradient-to-b from-sky-200 to-white dark:from-gray-800 dark:to-black transition-colors">
@@ -48,7 +52,9 @@ const SignIn = () => {
           <div className="bg-gray-200 dark:bg-gray-700 p-2 rounded-full shadow mb-4">
             <span className="text-2xl">🔐</span>
           </div>
-          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">Sign in with email</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 dark:text-white">
+            Sign in with email
+          </h2>
           <p className="text-gray-500 dark:text-gray-300 text-sm text-center mt-2">
             Unlock your smart insights.
           </p>
@@ -124,7 +130,10 @@ const SignIn = () => {
           >
             <FcGoogle size={22} />
           </button>
-          <button className="bg-blue-600 text-white p-2 rounded-full shadow hover:scale-105 transition">
+          <button
+            onClick={handleFacebookLogin}
+            className="bg-blue-600 text-white p-2 rounded-full shadow hover:scale-105 transition"
+          >
             <FaFacebookF size={20} />
           </button>
           <button className="bg-black text-white p-2 rounded-full shadow hover:scale-105 transition">
@@ -134,7 +143,10 @@ const SignIn = () => {
 
         <p className="text-center text-sm text-gray-500 dark:text-gray-300 mt-6">
           Don't have an account?{" "}
-          <a href="/signup" className="text-blue-600 dark:text-blue-400 hover:underline">
+          <a
+            href="/signup"
+            className="text-blue-600 dark:text-blue-400 hover:underline"
+          >
             Sign Up
           </a>
         </p>

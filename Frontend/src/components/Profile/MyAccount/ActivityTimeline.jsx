@@ -44,3 +44,6 @@ const ActivityTimeline = ({ activities }) => {
 };
 
 export default ActivityTimeline;
+
+
+// This component is used to display a timeline of user activities. It takes an array of activity objects as props and renders them using the ActivityItem component. Each activity item includes an icon, action description, date, and time. The component also includes a "View All" button for navigation.

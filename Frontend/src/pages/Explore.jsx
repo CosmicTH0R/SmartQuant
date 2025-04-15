@@ -85,7 +85,7 @@ export default function ExplorePage() {
     <>
     <Navbar />
     <div className="bg-gradient-to-b from-sky-200 to-white dark:from-gray-800 dark:to-black min-h-screen text-gray-800 dark:text-gray-100">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-2 py-6">
         {/* Stats Cards */}
         <StatsCards stats={globalStats} />
 

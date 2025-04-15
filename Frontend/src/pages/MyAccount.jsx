@@ -156,7 +156,8 @@ import ProfileTabs from "../components/Profile/MyAccount/ProfileTabs";
 import ProfileTab from "../components/Profile/MyAccount/ProfileTab";
 import ActivityTimeline from "../components/Profile/MyAccount/ActivityTimeline";
 import SecuritySettings from "../components/Profile/MyAccount/SecuritySettings";
-
+import NotificationTab from "../components/Profile/MyAccount/NotificationTab";
+import BillingTab from "../components/Profile/MyAccount/BillingTab";
 
 
 const user = {
@@ -191,6 +192,10 @@ const Settings = () => {
         return <ActivityTimeline activities={user.activity} />;
       case "security":
         return <SecuritySettings />;
+      case "billing":
+        return <BillingTab />;
+      case "notifications":
+        return <NotificationTab />;
       default:
         return <ProfileTab user={user} />;
     }

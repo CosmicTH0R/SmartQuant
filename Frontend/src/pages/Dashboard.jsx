@@ -67,10 +67,12 @@ const Dashboard = () => {
     <>
       <Navbar />
       <div className="bg-gradient-to-b from-sky-200 to-white dark:from-gray-800 dark:to-black min-h-screen px-4 md:px-6 py-6 pb-20">
+      <div className="container mx-auto px-2 ">
         <AccountSummary user={user} />
         <ChartSection />
         <WatchlistSection />
         <MarketNews />
+      </div>
       </div>
     </>
   );
