@@ -13,7 +13,7 @@ export function NotificationsPage() {
 
       <EmailNotifications />
       <PushNotifications />
-      <NotificationHistory />
+      {/* <NotificationHistory /> */}
     </div>
   );
 }
@@ -104,67 +104,4 @@ function NotificationItem({ icon: Icon, color, title, description, date }) {
   );
 }
 
-function NotificationHistory() {
-  const notifications = [
-    {
-      icon: Check,
-      color: 'green-600',
-      title: 'Trade executed successfully',
-      description: 'Your limit order for 0.5 BTC was filled at $67,240',
-      date: 'Apr 12, 2025 - 14:32'
-    },
-    {
-      icon: Info,
-      color: 'indigo-600',
-      title: 'Premium plan renewed',
-      description: 'Your premium subscription was successfully renewed for another year',
-      date: 'Jan 20, 2025 - 08:15'
-    },
-    {
-      icon: AlertTriangle,
-      color: 'yellow-500',
-      title: 'Price alert triggered',
-      description: 'ETH reached your target price of $3,200',
-      date: 'Apr 10, 2025 - 21:45'
-    }
-  ];
-
-  return (
-    <Card>
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Recent Notifications</h3>
-        <button className="text-indigo-600 dark:text-indigo-400 hover:underline font-medium">
-          Mark all as read
-        </button>
-      </div>
-
-      <div className="space-y-4">
-        {notifications.map((notification, index) => (
-          <NotificationItem
-            key={index}
-            icon={notification.icon}
-            color={notification.color}
-            title={notification.title}
-            description={notification.description}
-            date={notification.date}
-          />
-        ))}
-      </div>
-    </Card>
-  );
-}
-
 export default NotificationsPage;
-
-
-
-
-
-
-
-
-
-
-
-
-
