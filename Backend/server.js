@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import rateLimit from 'express-rate-limit';
+import passport from 'passport';
+
 
 // Load environment variables
 dotenv.config();
@@ -35,17 +37,20 @@ const limiter = rateLimit({
   message: 'Too many requests, please try again later.'
 });
 app.use(limiter);
+app.use(passport.initialize());
 
 // Routes
 import authRoutes from './routes/authRoutes.js';
 import stockRoutes from './routes/stockRoutes.js';
 import stockDetailRoutes from './routes/stockDetailRoutes.js';
 import resetPasswordRoutes from './routes/resetPasswordRoutes.js'; // Reset password route
+import './config/passport.js'; // Passport configuration
 
 app.use('/api/auth', authRoutes);
 app.use('/api/stocks', stockRoutes);
 app.use('/api/stocks-details', stockDetailRoutes);
 app.use('/api', resetPasswordRoutes); // Reset password route
+
 
 // Test Route
 app.get('/api/test', (req, res) => {
@@ -57,5 +62,3 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-
-

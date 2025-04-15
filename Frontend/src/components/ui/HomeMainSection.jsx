@@ -1,7 +1,7 @@
 // components/HomeMainSection.jsx
 import React from "react";
 import { FaCheckCircle, FaCreditCard } from "react-icons/fa";
-import StockCarousel from "./StockCarousel";
+import StockCarousel from "../StockCarousel";
 import { Link } from 'react-router-dom';
 
 const HomeMainSection = () => {

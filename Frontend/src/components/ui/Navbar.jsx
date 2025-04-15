@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleTheme } from "../Redux/ThemeSlice";
+import { toggleTheme } from "../../Redux/themeSlice";
 import { Moon, Sun, Search } from "lucide-react";
-import SearchBar from "./SearchBar";
+import SearchBar from "../SearchBar";
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const Navbar = () => {
 
         <Link to="/signup">
           <button className="bg-white dark:bg-blue-600 text-blue-900 dark:text-white text-sm sm:text-base rounded-full px-5 py-2 font-semibold hover:bg-gray-100 dark:hover:bg-blue-700 transition">
-            Get Started
+            Sign Up
           </button>
         </Link>
       </div>

@@ -1,47 +1,32 @@
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 
 const GoogleLoginButton = () => {
-  const handleCredentialResponse = async (response) => {
-    try {
-      const res = await fetch("http://localhost:5000/api/auth/oauth", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          oauthProvider: "google",
-          oauthId: response.sub,
-          email: response.email,
-          username: response.name,
-          profilePicture: response.picture,
-        }),
-      });
-
-      const data = await res.json();
-      localStorage.setItem("token", data.token);
-      window.location.href = "/";
-    } catch (error) {
-      console.error("OAuth login failed:", error);
-    }
+  const handleGoogleLogin = () => {
+    // Redirect to your backend OAuth start route
+    window.location.href = 'http://localhost:5000/api/auth/google';
   };
 
   useEffect(() => {
-    if (window.google) {
-      window.google.accounts.id.initialize({
-        client_id: "YOUR_GOOGLE_CLIENT_ID",
-        callback: handleCredentialResponse,
-      });
+    // Check if the URL has a token (after the Google OAuth flow finishes)
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
 
-      window.google.accounts.id.renderButton(
-        document.getElementById("google-button"),
-        { theme: "outline", size: "large" }
-      );
+    if (token) {
+      // Store token in HTTP-only cookie (secure approach)
+      document.cookie = `authToken=${token}; path=/; Secure; HttpOnly`;
+
+      // Redirect to dashboard or any other page you want after successful login
+      window.location.href = '/dashboard';
     }
   }, []);
 
   return (
-    <div
-      id="google-button"
-      className="flex justify-center dark:bg-transparent"
-    ></div>
+    <button
+      onClick={handleGoogleLogin}
+      className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600"
+    >
+      Sign in with Google
+    </button>
   );
 };
 

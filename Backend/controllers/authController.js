@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import crypto from "crypto";
 // import sendEmail from '../utils/sendEmail.js';
 import { sendVerificationEmail } from "../utils/sendVerificationEmail.js";
-import userSchema from "../models/userSchema.js";
 
 dotenv.config();
 
@@ -25,14 +24,22 @@ export const signup = async (req, res) => {
   try {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ success: false, message: "User already exists" });
+      return res
+        .status(400)
+        .json({ success: false, message: "User already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = await User.create({ username, email, password: hashedPassword });
+    const newUser = await User.create({
+      username,
+      email,
+      password: hashedPassword,
+    });
 
-    const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ id: newUser._id }, JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -52,10 +59,11 @@ export const signup = async (req, res) => {
     });
   } catch (err) {
     console.error("Signup error:", err);
-    res.status(500).json({ success: false, message: "Signup failed", error: err.message });
+    res
+      .status(500)
+      .json({ success: false, message: "Signup failed", error: err.message });
   }
 };
-
 
 // Regular Sign In
 export const signin = async (req, res) => {
@@ -215,10 +223,9 @@ export const logout = async (req, res) => {
       res.clearCookie("refreshToken", {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
-        sameSite: "None", 
+        sameSite: "None",
       });
       return res.status(200).json({ message: "Logged out successfully" });
-      
     }
 
     // 3. Clear the refresh token cookie
@@ -336,4 +343,21 @@ export const verifyEmail = async (req, res) => {
     console.error("Email verification error:", error);
     return res.status(500).json({ message: "Invalid or expired token 💥" });
   }
+};
+
+export const googleCallback = (req, res) => {
+  const user = req.user;
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "1d",
+  });
+
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // true in production
+    sameSite: "Lax",
+    maxAge: 24 * 60 * 60 * 1000, // 1 day
+  });
+
+  res.redirect(`http://localhost:5173/dashboard?token=${token}`);
 };

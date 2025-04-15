@@ -107,7 +107,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { BarChart4, Brain, SignalHigh, Rocket } from "lucide-react";
 
-import Navbar from "@/components/Navbar";
+import Navbar from "@/components/ui/Navbar";
 import FAQCard from "@/components/ui/FaqCard";
 
 const steps = [

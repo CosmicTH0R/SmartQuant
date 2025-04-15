@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "./Card";
+import Card from "../Card";
 import { FaCogs, FaClock, FaBell, FaChartPie } from "react-icons/fa";
 
 const Footer = () => {

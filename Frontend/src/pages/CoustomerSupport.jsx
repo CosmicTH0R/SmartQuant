@@ -2,7 +2,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar1";
 
-const Profile = () => {
+const CoustomerSupport = () => {
   return (
     <>
       <Navbar />
@@ -14,7 +14,7 @@ const Profile = () => {
           className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-10 max-w-md w-full text-center"
         >
           <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-4">
-            Welcome to Profile Section
+            Coustomer Support Page
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300">
             Adding the feature soon...
@@ -25,4 +25,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default CoustomerSupport;
