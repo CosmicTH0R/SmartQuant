@@ -46,7 +46,7 @@ router.post("/resend-verification", resendVerificationEmail);
 router.post("/refresh-token", refreshToken);
 
 // Logout (optional)
-router.post("/logout",authenticate, logout);
+router.post("/logout", logout);
 
 // Get user profile
 router.get("/me", authenticate, (req, res) => {
