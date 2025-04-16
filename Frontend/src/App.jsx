@@ -16,7 +16,7 @@ import GetStarted from "./pages/GetStarted";
 import StockDetail from "./pages/StockDetail";
 import ResetPasswordForm from "./components/ResetPasswordForm";
 import ForgotPasswordForm from "./components/ForgotPasswordForm";
-import Cart from "./pages/Cart";
+import AllPurchases from "./pages/AllPurchases";
 import MyAccount from "./pages/MyAccount";
 import CoustomerSupport from "./pages/CoustomerSupport";
 import Reports from "./pages/Reports";
@@ -46,7 +46,7 @@ function App() {
         <Route path="/explore" element={<Explore />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/wallet" element={<Wallet />} />
-        <Route path="/cart" element={<Cart />} />
+        <Route path="/all-purchases" element={<AllPurchases />} />
         <Route path="/forgot-password" element={<ForgotPasswordForm />} />
         <Route path="/how-it-works" element={<HowItWorks />} />
         <Route path="/get-started" element={<GetStarted />} />

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { Settings, ClipboardList, Headphones, FileText, LogOut, User, ShoppingBag } from "lucide-react";
+import { Headphones, FileText, LogOut, User, ShoppingBag } from "lucide-react";
 import { toast } from "react-toastify";
 
 const ProfileDropdown = ({ apiBaseUrl = "http://localhost:5000" }) => {
@@ -19,10 +19,9 @@ const ProfileDropdown = ({ apiBaseUrl = "http://localhost:5000" }) => {
       ]
     },
     {
-      category: "Orders",
+      category: "Purchases",
       items: [
-        { icon: ShoppingBag, label: "All Orders", action: () => navigate("/orders") },
-        { icon: ClipboardList, label: "Track Order", action: () => navigate("/track-order") },
+        { icon: ShoppingBag, label: "All Purchases", action: () => navigate("/all-purchases") },
       ]
     },
     {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Sun, Moon, Bell, Wallet, ShoppingCart, Search } from "lucide-react";
+import { Sun, Moon, Bell, Wallet, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../Redux/ThemeSlice";
@@ -79,9 +79,6 @@ const Navbar = () => {
 
         <Link to="/wallet" className="hover:text-blue-400">
           <Wallet size={20} />
-        </Link>
-        <Link to="/cart" className="hover:text-blue-400">
-          <ShoppingCart size={20} className="hover:text-blue-400" />
         </Link>
         <ProfileDropdown />
       </div>
