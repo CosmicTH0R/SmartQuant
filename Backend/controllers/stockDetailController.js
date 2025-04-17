@@ -1,115 +1,72 @@
-// import axios from 'axios';
-
-// export const getStockDetails = async (req, res) => {
-//   const { symbol } = req.params;
-
-//   try {
-//     const quoteRes = await axios.get(`https://yfapi.net/v6/finance/quote?symbols=${symbol}`, {
-//       headers: {
-//         'X-API-KEY': process.env.YAHOO_API_KEY,
-//         'X-API-HOST': 'yfapi.net'
-//       }
-//     });
-
-//     const result = quoteRes.data.quoteResponse.result[0];
-
-//     const chartRes = await axios.get(`https://yfapi.net/v8/finance/chart/${symbol}?range=1mo&interval=1d`, {
-//       headers: {
-//         'X-API-KEY': process.env.YAHOO_API_KEY,
-//         'X-API-HOST': 'yfapi.net'
-//       }
-//     });
-
-//     const timestamps = chartRes.data.chart.result[0].timestamp;
-//     const prices = chartRes.data.chart.result[0].indicators.adjclose[0].adjclose;
-
-//     const chartData = timestamps.map((t, i) => ({
-//       date: new Date(t * 1000),
-//       close: prices[i]
-//     }));
-
-//     res.json({
-//       price: {
-//         current: result.regularMarketPrice,
-//         change: result.regularMarketChange.toFixed(2),
-//         changePercent: result.regularMarketChangePercent.toFixed(2),
-//         high: result.regularMarketDayHigh,
-//         low: result.regularMarketDayLow,
-//         low52w: result.fiftyTwoWeekLow,
-//         high52w: result.fiftyTwoWeekHigh,
-//       },
-//       chartData,
-//       about: {
-//         name: result.longName || result.shortName,
-//         industry: result.industry || 'N/A',
-//         description: 'Description from a second API (optional)',
-//         ceo: 'N/A',
-//         founded: 'N/A',
-//         headquarters: result.city ? `${result.city}, ${result.state || ''}` : 'N/A',
-//       },
-//       stats: {
-//         marketCap: result.marketCap,
-//         pe: result.trailingPE,
-//         eps: result.epsTrailingTwelveMonths,
-//         volume: result.regularMarketVolume,
-//         avgVolume: result.averageDailyVolume3Month,
-//         dividendYield: result.trailingAnnualDividendYield,
-//       }
-//     });
-
-//   } catch (error) {
-//     console.error(error.message);
-//     res.status(500).json({ error: 'Failed to fetch stock data' });
-//   }
-// };
-
-
-
-
-import yahooFinance from 'yahoo-finance2';  // Import the yahoo-finance2 library
+import yahooFinance from 'yahoo-finance2';
 
 export const getStockDetails = async (req, res) => {
   const { symbol } = req.params;
 
-  try {
-    // Fetching stock data using yahoo-finance2 library
-    const quote = await yahooFinance.quote(symbol);
+  if (!symbol) {
+    return res.status(400).json({ error: 'Stock symbol is required' });
+  }
 
-    // Preparing the response with the relevant data
+  try {
+    const [quote, historical] = await Promise.all([
+      yahooFinance.quote(symbol),
+      yahooFinance.historical(symbol, {
+        period1: new Date('2023-01-01'),
+        period2: new Date(),
+        interval: '1d',
+      }),
+    ]);
+
+    if (!quote || !historical || historical.length === 0) {
+      return res.status(404).json({ error: 'Stock data not found' });
+    }
+
+    const chartData = historical.map((point) => ({
+      date: point.date.toISOString().split('T')[0],
+      close: point.close != null ? parseFloat(point.close.toFixed(2)) : null,
+    }));
+
     const stockData = {
       price: {
-        current: quote.regularMarketPrice,
-        change: quote.regularMarketChange.toFixed(2),
-        changePercent: quote.regularMarketChangePercent.toFixed(2),
-        high: quote.regularMarketDayHigh,
-        low: quote.regularMarketDayLow,
-        low52w: quote.fiftyTwoWeekLow,
-        high52w: quote.fiftyTwoWeekHigh,
+        current: quote.regularMarketPrice ?? null,
+        change: quote.regularMarketChange != null ? parseFloat(quote.regularMarketChange.toFixed(2)) : null,
+        changePercent: quote.regularMarketChangePercent != null
+          ? parseFloat(quote.regularMarketChangePercent.toFixed(2))
+          : null,
+        high: quote.regularMarketDayHigh ?? null,
+        low: quote.regularMarketDayLow ?? null,
+        low52w: quote.fiftyTwoWeekLow ?? null,
+        high52w: quote.fiftyTwoWeekHigh ?? null,
       },
-      chartData: [],  // Chart data can be fetched separately or removed if not needed.
+      chartData,
       about: {
-        name: quote.longName || quote.shortName,
-        industry: quote.industry || 'N/A',
-        description: 'Description from a second API (optional)',
-        ceo: 'N/A',
-        founded: 'N/A',
-        headquarters: quote.city ? `${quote.city}, ${quote.state || ''}` : 'N/A',
+        name: quote.longName ?? quote.shortName ?? 'N/A',
+        industry: quote.industry ?? 'N/A',
+        sector: quote.sector ?? 'N/A',
+        description: quote.longBusinessSummary ?? 'N/A',
+        ceo: quote.companyOfficers?.[0]?.name ?? 'N/A', // assuming API returns company officers
+        founded: quote.firstTradeDateEpochUtc
+          ? new Date(quote.firstTradeDateEpochUtc).getFullYear()
+          : 'N/A',
+        headquarters: quote.city && quote.state
+          ? `${quote.city}, ${quote.state}`
+          : quote.city ?? quote.state ?? 'N/A',
       },
       stats: {
-        marketCap: quote.marketCap,
-        pe: quote.trailingPE,
-        eps: quote.epsTrailingTwelveMonths,
-        volume: quote.regularMarketVolume,
-        avgVolume: quote.averageDailyVolume3Month,
-        dividendYield: quote.trailingAnnualDividendYield,
-      }
+        marketCap: quote.marketCap ?? null,
+        pe: quote.trailingPE ?? null,
+        eps: quote.epsTrailingTwelveMonths ?? null,
+        volume: quote.regularMarketVolume ?? null,
+        avgVolume: quote.averageDailyVolume3Month ?? null,
+        dividendYield: quote.trailingAnnualDividendYield != null
+          ? parseFloat((quote.trailingAnnualDividendYield * 100).toFixed(2))
+          : null,
+      },
     };
 
-    // Sending the response back to the frontend
-    res.json(stockData);
-
+    return res.json(stockData);
   } catch (error) {
-    console.error("Error fetching stock data", error.message);
-    res.status(500).json({ error: 'Failed to fetch stock data' });
+    console.error('Error fetching stock data:', error);
+    return res.status(500).json({ error: 'Failed to fetch stock data', message: error.message });
   }
 };

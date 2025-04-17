@@ -28,7 +28,7 @@ const ProfileDropdown = ({ apiBaseUrl = "http://localhost:5000" }) => {
       category: "Support",
       items: [
         { icon: Headphones, label: "Customer Support", action: () => navigate("/support") },
-        { icon: FileText, label: "Reports", action: () => navigate("/reports") },
+        { icon: FileText, label: "Market News & Reports", action: () => navigate("/reports") },
       ]
     },
   ];
