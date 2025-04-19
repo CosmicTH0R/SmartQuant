@@ -27,8 +27,6 @@
 
 // export default Reports;
 
-
-
 // import React from "react";
 // import { motion } from "framer-motion";
 // import Navbar from "../components/Navbar1";
@@ -120,107 +118,612 @@
 
 // export default Reports;
 
+// import React, { useState } from "react";
+// import { motion } from "framer-motion";
+// import Navbar from "../components/Navbar1";
+// import {
+//   Newspaper,
+//   TrendingUp,
+//   Clock,
+//   Search,
+//   Filter,
+//   Bell,
+//   BookmarkPlus,
+//   Share2,
+//   ChevronRight,
+//   ArrowRight,
+//   BarChart2
+// } from "lucide-react";
+
+// const sampleNews = [
+//   {
+//     id: 1,
+//     title: "Tech Stocks Rally as Market Rebounds",
+//     source: "Bloomberg",
+//     time: "2 hours ago",
+//     summary: "Major tech companies saw significant gains today as the market responded positively to economic data.",
+//     link: "#",
+//     category: "Technology",
+//     impact: "high"
+//   },
+//   {
+//     id: 2,
+//     title: "Federal Reserve Signals Interest Rate Pause",
+//     source: "Reuters",
+//     time: "4 hours ago",
+//     summary: "The Federal Reserve indicated a potential pause in interest rate hikes, impacting financial markets.",
+//     link: "#",
+//     category: "Economy",
+//     impact: "high"
+//   },
+//   {
+//     id: 3,
+//     title: "Oil Prices Surge Amid Supply Concerns",
+//     source: "CNBC",
+//     time: "6 hours ago",
+//     summary: "Global oil prices increased due to concerns over supply disruptions in key regions.",
+//     link: "#",
+//     category: "Commodities",
+//     impact: "medium"
+//   },
+//   {
+//     id: 4,
+//     title: "European Markets Close Higher on Strong Earnings",
+//     source: "Financial Times",
+//     time: "3 hours ago",
+//     summary: "European stock markets closed higher as major companies reported better-than-expected quarterly earnings.",
+//     link: "#",
+//     category: "Global Markets",
+//     impact: "medium"
+//   },
+//   {
+//     id: 5,
+//     title: "Crypto Market Sees Significant Volatility",
+//     source: "CoinDesk",
+//     time: "1 hour ago",
+//     summary: "Cryptocurrency markets experienced notable price swings following regulatory announcements.",
+//     link: "#",
+//     category: "Cryptocurrency",
+//     impact: "medium"
+//   },
+//   {
+//     id: 6,
+//     title: "Manufacturing Data Shows Expansion",
+//     source: "MarketWatch",
+//     time: "5 hours ago",
+//     summary: "The latest manufacturing PMI data indicates an expansion in the sector, beating analyst expectations.",
+//     link: "#",
+//     category: "Economy",
+//     impact: "low"
+//   },
+// ];
+
+// const categories = ["All", "Technology", "Economy", "Commodities", "Global Markets", "Cryptocurrency"];
+
+// const Reports = () => {
+//   const [activeCategory, setActiveCategory] = useState("All");
+//   const [searchQuery, setSearchQuery] = useState("");
+//   const [savedArticles, setSavedArticles] = useState([]);
+
+//   // Filter news based on active category and search query
+//   const filteredNews = sampleNews.filter(news => {
+//     const matchesCategory = activeCategory === "All" || news.category === activeCategory;
+//     const matchesSearch = news.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+//                           news.summary.toLowerCase().includes(searchQuery.toLowerCase());
+//     return matchesCategory && matchesSearch;
+//   });
+
+//   const toggleSaved = (id) => {
+//     if (savedArticles.includes(id)) {
+//       setSavedArticles(savedArticles.filter(articleId => articleId !== id));
+//     } else {
+//       setSavedArticles([...savedArticles, id]);
+//     }
+//   };
+
+//   // Animation variants
+//   const containerVariants = {
+//     hidden: { opacity: 0 },
+//     visible: {
+//       opacity: 1,
+//       transition: {
+//         staggerChildren: 0.1
+//       }
+//     }
+//   };
+
+//   const itemVariants = {
+//     hidden: { opacity: 0, y: 20 },
+//     visible: { opacity: 1, y: 0 }
+//   };
+
+//   return (
+//     <>
+//       <Navbar />
+//       <div className="min-h-screen bg-gradient-to-b from-sky-100 to-white dark:from-gray-900 dark:to-gray-800 px-6 py-12">
+//         <div className="max-w-6xl mx-auto">
+//           {/* Header Section */}
+//           <motion.div
+//             initial={{ opacity: 0, y: -20 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             transition={{ duration: 0.6 }}
+//             className="mb-8"
+//           >
+//             <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+//               <div>
+//                 <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">
+//                   Market <span className="text-indigo-600 dark:text-indigo-400">News & Reports</span>
+//                 </h1>
+//                 <p className="text-gray-600 dark:text-gray-300 text-lg">
+//                   Stay updated with the latest market movements and financial news
+//                 </p>
+//               </div>
+//               <div className="flex items-center gap-4 mt-4 md:mt-0">
+//                 <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg transition-colors">
+//                   <Bell className="h-4 w-4" />
+//                   Alerts
+//                 </button>
+//                 <div className="relative">
+//                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+//                     <Search className="h-4 w-4 text-gray-400" />
+//                   </div>
+//                   <input
+//                     type="text"
+//                     placeholder="Search news..."
+//                     value={searchQuery}
+//                     onChange={(e) => setSearchQuery(e.target.value)}
+//                     className="pl-10 pr-4 py-2 bg-white dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 text-gray-800 dark:text-white"
+//                   />
+//                 </div>
+//               </div>
+//             </div>
+
+//             {/* Market Snapshot */}
+//             <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 mb-8">
+//               <div className="flex items-center justify-between mb-4">
+//                 <h2 className="text-lg font-semibold text-gray-800 dark:text-white flex items-center">
+//                   <BarChart2 className="h-5 w-5 mr-2 text-indigo-600" />
+//                   Market Snapshot
+//                 </h2>
+//                 <span className="text-sm text-gray-500 dark:text-gray-400">Last updated: 15 minutes ago</span>
+//               </div>
+//               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+//                 {[
+//                   { name: "S&P 500", value: "4,872.56", change: "+1.25%", up: true },
+//                   { name: "Nasdaq", value: "15,436.78", change: "+1.78%", up: true },
+//                   { name: "Dow Jones", value: "35,783.21", change: "+0.89%", up: true },
+//                   { name: "10Y Treasury", value: "3.85%", change: "-0.07%", up: false },
+//                 ].map((index) => (
+//                   <div key={index.name} className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+//                     <div className="text-sm text-gray-500 dark:text-gray-400">{index.name}</div>
+//                     <div className="text-lg font-medium text-gray-800 dark:text-white">{index.value}</div>
+//                     <div className={`text-sm ${index.up ? 'text-green-600' : 'text-red-600'}`}>
+//                       {index.change}
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+
+//             {/* Category Tabs */}
+//             <div className="flex overflow-x-auto pb-2 mb-8 scrollbar-hide">
+//               {categories.map((category) => (
+//                 <button
+//                   key={category}
+//                   onClick={() => setActiveCategory(category)}
+//                   className={`px-4 py-2 mr-2 rounded-full whitespace-nowrap transition-colors ${
+//                     activeCategory === category
+//                       ? "bg-indigo-600 text-white"
+//                       : "bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600"
+//                   }`}
+//                 >
+//                   {category}
+//                 </button>
+//               ))}
+//               <button className="px-4 py-2 mr-2 rounded-full whitespace-nowrap bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-600 flex items-center">
+//                 <Filter className="h-4 w-4 mr-1" />
+//                 More Filters
+//               </button>
+//             </div>
+//           </motion.div>
+
+//           {/* Breaking News Banner */}
+//           {activeCategory === "All" && (
+//             <motion.div
+//               initial={{ opacity: 0, y: 10 }}
+//               animate={{ opacity: 1, y: 0 }}
+//               transition={{ duration: 0.4 }}
+//               className="bg-red-50 dark:bg-red-900/30 border-l-4 border-red-600 p-4 mb-8 rounded-r-lg"
+//             >
+//               <div className="flex items-center">
+//                 <div className="flex-shrink-0">
+//                   <span className="bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full">BREAKING</span>
+//                 </div>
+//                 <div className="ml-3">
+//                   <p className="text-red-800 dark:text-red-200 font-medium">Major Central Banks announce coordinated policy action</p>
+//                 </div>
+//                 <div className="ml-auto">
+//                   <a href="#" className="text-red-700 dark:text-red-300 hover:underline text-sm flex items-center">
+//                     Read more <ChevronRight className="h-4 w-4" />
+//                   </a>
+//                 </div>
+//               </div>
+//             </motion.div>
+//           )}
+
+//           {/* News Cards */}
+//           <motion.div
+//             variants={containerVariants}
+//             initial="hidden"
+//             animate="visible"
+//             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+//           >
+//             {filteredNews.length > 0 ? (
+//               filteredNews.map((news) => (
+//                 <motion.div
+//                   key={news.id}
+//                   variants={itemVariants}
+//                   className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden flex flex-col"
+//                 >
+//                   <div className="p-6">
+//                     <div className="flex items-start justify-between mb-3">
+//                       <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
+//                         news.impact === "high" ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300" :
+//                         news.impact === "medium" ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300" :
+//                         "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+//                       }`}>
+//                         {news.impact === "high" ? "High Impact" : news.impact === "medium" ? "Medium Impact" : "Low Impact"}
+//                       </span>
+//                       <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full text-gray-600 dark:text-gray-300">
+//                         {news.category}
+//                       </span>
+//                     </div>
+
+//                     <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-3">
+//                       {news.title}
+//                     </h2>
+
+//                     <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+//                       {news.summary}
+//                     </p>
+
+//                     <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+//                       <Newspaper className="h-4 w-4 mr-1" />
+//                       <span className="mr-3">{news.source}</span>
+//                       <Clock className="h-4 w-4 mr-1" />
+//                       <span>{news.time}</span>
+//                     </div>
+//                   </div>
+
+//                   <div className="mt-auto border-t border-gray-100 dark:border-gray-700 p-4 flex items-center justify-between">
+//                     <a
+//                       href={news.link}
+//                       className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium flex items-center"
+//                     >
+//                       Read full article <ArrowRight className="h-4 w-4 ml-1" />
+//                     </a>
+
+//                     <div className="flex items-center space-x-2">
+//                       <button
+//                         onClick={() => toggleSaved(news.id)}
+//                         className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${
+//                           savedArticles.includes(news.id) ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400'
+//                         }`}
+//                       >
+//                         <BookmarkPlus className="h-4 w-4" />
+//                       </button>
+//                       <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400">
+//                         <Share2 className="h-4 w-4" />
+//                       </button>
+//                     </div>
+//                   </div>
+//                 </motion.div>
+//               ))
+//             ) : (
+//               <div className="col-span-3 text-center py-12">
+//                 <Newspaper className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+//                 <h3 className="text-xl font-medium text-gray-800 dark:text-white mb-2">No news found</h3>
+//                 <p className="text-gray-600 dark:text-gray-400">
+//                   Try adjusting your search or filter criteria
+//                 </p>
+//               </div>
+//             )}
+//           </motion.div>
+
+//           {/* View More Button */}
+//           {filteredNews.length > 0 && (
+//             <motion.div
+//               initial={{ opacity: 0 }}
+//               animate={{ opacity: 1 }}
+//               transition={{ delay: 0.5 }}
+//               className="mt-10 text-center"
+//             >
+//               <button className="bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-400 border border-indigo-600 dark:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 px-6 py-3 rounded-lg font-medium transition-colors">
+//                 View More Articles
+//               </button>
+//             </motion.div>
+//           )}
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Reports;
 
 
 
-import React, { useState } from "react";
+
+
+
+
+
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Navbar from "../components/Navbar1";
-import { 
-  Newspaper, 
-  TrendingUp, 
-  Clock, 
-  Search, 
-  Filter, 
-  Bell, 
-  BookmarkPlus, 
-  Share2, 
-  ChevronRight, 
+import {
+  Newspaper,
+  TrendingUp,
+  Clock,
+  Search,
+  Filter,
+  Bell,
+  BookmarkPlus,
+  Share2,
+  ChevronRight,
   ArrowRight,
-  BarChart2
+  BarChart2,
 } from "lucide-react";
 
-const sampleNews = [
-  {
-    id: 1,
-    title: "Tech Stocks Rally as Market Rebounds",
-    source: "Bloomberg",
-    time: "2 hours ago",
-    summary: "Major tech companies saw significant gains today as the market responded positively to economic data.",
-    link: "#",
-    category: "Technology",
-    impact: "high"
-  },
-  {
-    id: 2,
-    title: "Federal Reserve Signals Interest Rate Pause",
-    source: "Reuters",
-    time: "4 hours ago",
-    summary: "The Federal Reserve indicated a potential pause in interest rate hikes, impacting financial markets.",
-    link: "#",
-    category: "Economy",
-    impact: "high"
-  },
-  {
-    id: 3,
-    title: "Oil Prices Surge Amid Supply Concerns",
-    source: "CNBC",
-    time: "6 hours ago",
-    summary: "Global oil prices increased due to concerns over supply disruptions in key regions.",
-    link: "#",
-    category: "Commodities",
-    impact: "medium"
-  },
-  {
-    id: 4,
-    title: "European Markets Close Higher on Strong Earnings",
-    source: "Financial Times",
-    time: "3 hours ago",
-    summary: "European stock markets closed higher as major companies reported better-than-expected quarterly earnings.",
-    link: "#",
-    category: "Global Markets",
-    impact: "medium"
-  },
-  {
-    id: 5,
-    title: "Crypto Market Sees Significant Volatility",
-    source: "CoinDesk",
-    time: "1 hour ago",
-    summary: "Cryptocurrency markets experienced notable price swings following regulatory announcements.",
-    link: "#",
-    category: "Cryptocurrency",
-    impact: "medium"
-  },
-  {
-    id: 6,
-    title: "Manufacturing Data Shows Expansion",
-    source: "MarketWatch",
-    time: "5 hours ago",
-    summary: "The latest manufacturing PMI data indicates an expansion in the sector, beating analyst expectations.",
-    link: "#",
-    category: "Economy",
-    impact: "low"
-  },
+const categories = [
+  "All",
+  "Technology",
+  "Economy",
+  "Commodities",
+  "Global Markets",
+  "Cryptocurrency",
 ];
 
-const categories = ["All", "Technology", "Economy", "Commodities", "Global Markets", "Cryptocurrency"];
+// Utility function to format relative time
+const formatRelativeTime = (dateString) => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now - date;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHrs = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHrs / 24);
+
+  if (diffMins < 60) {
+    return `${diffMins} minute${diffMins !== 1 ? "s" : ""} ago`;
+  } else if (diffHrs < 24) {
+    return `${diffHrs} hour${diffHrs !== 1 ? "s" : ""} ago`;
+  } else {
+    return `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+  }
+};
+
+// Function to determine news impact based on content analysis
+const determineImpact = (title = "", description = "") => {
+  const content = (title + " " + description).toLowerCase();
+  const highImpactTerms = [
+    "crash",
+    "surge",
+    "plunge",
+    "soar",
+    "crisis",
+    "boom",
+    "record high",
+    "record low",
+    "collapse",
+  ];
+  const mediumImpactTerms = [
+    "rise",
+    "fall",
+    "increase",
+    "decrease",
+    "gain",
+    "loss",
+    "growth",
+    "decline",
+  ];
+
+  if (highImpactTerms.some((term) => content.includes(term))) {
+    return "high";
+  } else if (mediumImpactTerms.some((term) => content.includes(term))) {
+    return "medium";
+  } else {
+    return "low";
+  }
+};
+
+// Function to categorize news articles
+const categorizeNews = (article) => {
+  const title = article.title?.toLowerCase() || "";
+  const description = article.description?.toLowerCase() || "";
+  const content = title + " " + description;
+
+  if (
+    content.includes("tech") ||
+    content.includes("technology") ||
+    content.includes("apple") ||
+    content.includes("microsoft") ||
+    content.includes("google") ||
+    content.includes("amazon")
+  ) {
+    return "Technology";
+  } else if (
+    content.includes("oil") ||
+    content.includes("gas") ||
+    content.includes("gold") ||
+    content.includes("silver") ||
+    content.includes("commodit")
+  ) {
+    return "Commodities";
+  } else if (
+    content.includes("bitcoin") ||
+    content.includes("crypto") ||
+    content.includes("ethereum") ||
+    content.includes("blockchain")
+  ) {
+    return "Cryptocurrency";
+  } else if (
+    content.includes("europe") ||
+    content.includes("asia") ||
+    content.includes("global") ||
+    content.includes("international") ||
+    content.includes("foreign")
+  ) {
+    return "Global Markets";
+  } else if (
+    content.includes("fed") ||
+    content.includes("inflation") ||
+    content.includes("interest rate") ||
+    content.includes("economy") ||
+    content.includes("economic") ||
+    content.includes("gdp")
+  ) {
+    return "Economy";
+  } else {
+    return "Economy"; // Default category
+  }
+};
 
 const Reports = () => {
   const [activeCategory, setActiveCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [savedArticles, setSavedArticles] = useState([]);
+  const [newsData, setNewsData] = useState([]);
+  const [marketIndices, setMarketIndices] = useState([
+    { name: "S&P 500", value: "Loading...", change: "—", up: true },
+    { name: "Nasdaq", value: "Loading...", change: "—", up: true },
+    { name: "Dow Jones", value: "Loading...", change: "—", up: true },
+    { name: "10Y Treasury", value: "Loading...", change: "—", up: false },
+  ]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [lastUpdated, setLastUpdated] = useState("Loading...");
+
+  // Fetch news data
+  useEffect(() => {
+    const fetchNews = async () => {
+      setLoading(true);
+      try {
+        // Using NewsAPI for financial news
+        const apiKey = process.env.NEWS_API_KEY;
+        const response = await fetch(
+          `https://newsapi.org/v2/everything?q=finance+OR+market+OR+stocks&language=en&sortBy=publishedAt&apiKey=${apiKey}`
+        );
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch news: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.articles && data.articles.length > 0) {
+          // Process and transform the API response
+          const processedNews = data.articles
+            .slice(0, 20)
+            .map((article, index) => ({
+              id: index + 1,
+              title: article.title || "Untitled Article",
+              source: article.source?.name || "Unknown Source",
+              time: formatRelativeTime(article.publishedAt),
+              summary: article.description || "No description available",
+              link: article.url,
+              category: categorizeNews(article),
+              impact: determineImpact(article.title, article.description),
+              urlToImage: article.urlToImage,
+            }));
+
+          setNewsData(processedNews);
+          setLastUpdated("Just now");
+        } else {
+          throw new Error("No articles found");
+        }
+      } catch (err) {
+        console.error("Error fetching news:", err);
+        setError("Failed to load news data. Using sample data instead.");
+
+        // Fallback to sample data if API fails
+        setNewsData(sampleNews);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Fetch market indices data
+    const fetchMarketIndices = async () => {
+      try {
+        // Using a fictional endpoint - in production you would use a real financial API
+        // const response = await fetch("https://api.example.com/market-indices");
+        // const data = await response.json();
+
+        // For demo purposes, we'll use simulated data with random changes
+        const generateRandomChange = () => {
+          const change = (Math.random() * 2 - 1).toFixed(2);
+          return {
+            value: change > 0 ? "+" + change + "%" : change + "%",
+            up: change > 0,
+          };
+        };
+
+        const indices = [
+          {
+            name: "S&P 500",
+            value: (4800 + Math.random() * 200).toFixed(2),
+            ...generateRandomChange(),
+          },
+          {
+            name: "Nasdaq",
+            value: (15000 + Math.random() * 1000).toFixed(2),
+            ...generateRandomChange(),
+          },
+          {
+            name: "Dow Jones",
+            value: (35000 + Math.random() * 1500).toFixed(2),
+            ...generateRandomChange(),
+          },
+          {
+            name: "10Y Treasury",
+            value: (3.5 + Math.random() * 1).toFixed(2) + "%",
+            ...generateRandomChange(),
+          },
+        ];
+
+        setMarketIndices(indices);
+        setLastUpdated("15 minutes ago");
+      } catch (err) {
+        console.error("Error fetching market indices:", err);
+      }
+    };
+
+    fetchNews();
+    fetchMarketIndices();
+
+    // Optional: Set up polling for live updates
+    const newsInterval = setInterval(fetchNews, 300000); // Every 5 minutes
+    const indicesInterval = setInterval(fetchMarketIndices, 900000); // Every 15 minutes
+
+    return () => {
+      clearInterval(newsInterval);
+      clearInterval(indicesInterval);
+    };
+  }, []);
 
   // Filter news based on active category and search query
-  const filteredNews = sampleNews.filter(news => {
-    const matchesCategory = activeCategory === "All" || news.category === activeCategory;
-    const matchesSearch = news.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
-                          news.summary.toLowerCase().includes(searchQuery.toLowerCase());
+  const filteredNews = newsData.filter((news) => {
+    const matchesCategory =
+      activeCategory === "All" || news.category === activeCategory;
+    const matchesSearch =
+      news.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      news.summary.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
   const toggleSaved = (id) => {
     if (savedArticles.includes(id)) {
-      setSavedArticles(savedArticles.filter(articleId => articleId !== id));
+      setSavedArticles(savedArticles.filter((articleId) => articleId !== id));
     } else {
       setSavedArticles([...savedArticles, id]);
     }
@@ -232,15 +735,85 @@ const Reports = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
-      }
-    }
+        staggerChildren: 0.1,
+      },
+    },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
+    visible: { opacity: 1, y: 0 },
   };
+
+  // Sample news data as fallback
+  const sampleNews = [
+    {
+      id: 1,
+      title: "Tech Stocks Rally as Market Rebounds",
+      source: "Bloomberg",
+      time: "2 hours ago",
+      summary:
+        "Major tech companies saw significant gains today as the market responded positively to economic data.",
+      link: "#",
+      category: "Technology",
+      impact: "high",
+    },
+    {
+      id: 2,
+      title: "Federal Reserve Signals Interest Rate Pause",
+      source: "Reuters",
+      time: "4 hours ago",
+      summary:
+        "The Federal Reserve indicated a potential pause in interest rate hikes, impacting financial markets.",
+      link: "#",
+      category: "Economy",
+      impact: "high",
+    },
+    {
+      id: 3,
+      title: "Oil Prices Surge Amid Supply Concerns",
+      source: "CNBC",
+      time: "6 hours ago",
+      summary:
+        "Global oil prices increased due to concerns over supply disruptions in key regions.",
+      link: "#",
+      category: "Commodities",
+      impact: "medium",
+    },
+    {
+      id: 4,
+      title: "European Markets Close Higher on Strong Earnings",
+      source: "Financial Times",
+      time: "3 hours ago",
+      summary:
+        "European stock markets closed higher as major companies reported better-than-expected quarterly earnings.",
+      link: "#",
+      category: "Global Markets",
+      impact: "medium",
+    },
+    {
+      id: 5,
+      title: "Crypto Market Sees Significant Volatility",
+      source: "CoinDesk",
+      time: "1 hour ago",
+      summary:
+        "Cryptocurrency markets experienced notable price swings following regulatory announcements.",
+      link: "#",
+      category: "Cryptocurrency",
+      impact: "medium",
+    },
+    {
+      id: 6,
+      title: "Manufacturing Data Shows Expansion",
+      source: "MarketWatch",
+      time: "5 hours ago",
+      summary:
+        "The latest manufacturing PMI data indicates an expansion in the sector, beating analyst expectations.",
+      link: "#",
+      category: "Economy",
+      impact: "low",
+    },
+  ];
 
   return (
     <>
@@ -257,10 +830,14 @@ const Reports = () => {
             <div className="flex flex-col md:flex-row justify-between items-center mb-8">
               <div>
                 <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-2">
-                  Market <span className="text-indigo-600 dark:text-indigo-400">News & Reports</span>
+                  Market{" "}
+                  <span className="text-indigo-600 dark:text-indigo-400">
+                    News & Reports
+                  </span>
                 </h1>
                 <p className="text-gray-600 dark:text-gray-300 text-lg">
-                  Stay updated with the latest market movements and financial news
+                  Stay updated with the latest market movements and financial
+                  news
                 </p>
               </div>
               <div className="flex items-center gap-4 mt-4 md:mt-0">
@@ -290,19 +867,27 @@ const Reports = () => {
                   <BarChart2 className="h-5 w-5 mr-2 text-indigo-600" />
                   Market Snapshot
                 </h2>
-                <span className="text-sm text-gray-500 dark:text-gray-400">Last updated: 15 minutes ago</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  Last updated: {lastUpdated}
+                </span>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                {[
-                  { name: "S&P 500", value: "4,872.56", change: "+1.25%", up: true },
-                  { name: "Nasdaq", value: "15,436.78", change: "+1.78%", up: true },
-                  { name: "Dow Jones", value: "35,783.21", change: "+0.89%", up: true },
-                  { name: "10Y Treasury", value: "3.85%", change: "-0.07%", up: false },
-                ].map((index) => (
-                  <div key={index.name} className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-                    <div className="text-sm text-gray-500 dark:text-gray-400">{index.name}</div>
-                    <div className="text-lg font-medium text-gray-800 dark:text-white">{index.value}</div>
-                    <div className={`text-sm ${index.up ? 'text-green-600' : 'text-red-600'}`}>
+                {marketIndices.map((index) => (
+                  <div
+                    key={index.name}
+                    className="p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                  >
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
+                      {index.name}
+                    </div>
+                    <div className="text-lg font-medium text-gray-800 dark:text-white">
+                      {index.value}
+                    </div>
+                    <div
+                      className={`text-sm ${
+                        index.up ? "text-green-600" : "text-red-600"
+                      }`}
+                    >
                       {index.change}
                     </div>
                   </div>
@@ -333,7 +918,7 @@ const Reports = () => {
           </motion.div>
 
           {/* Breaking News Banner */}
-          {activeCategory === "All" && (
+          {activeCategory === "All" && newsData.length > 0 && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -342,18 +927,41 @@ const Reports = () => {
             >
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <span className="bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full">BREAKING</span>
+                  <span className="bg-red-600 text-white text-xs font-semibold px-2 py-1 rounded-full">
+                    BREAKING
+                  </span>
                 </div>
                 <div className="ml-3">
-                  <p className="text-red-800 dark:text-red-200 font-medium">Major Central Banks announce coordinated policy action</p>
+                  <p className="text-red-800 dark:text-red-200 font-medium">
+                    {newsData[0]?.impact === "high"
+                      ? newsData[0]?.title
+                      : "Major financial news updates available"}
+                  </p>
                 </div>
                 <div className="ml-auto">
-                  <a href="#" className="text-red-700 dark:text-red-300 hover:underline text-sm flex items-center">
+                  <a
+                    href={newsData[0]?.link || "#"}
+                    className="text-red-700 dark:text-red-300 hover:underline text-sm flex items-center"
+                  >
                     Read more <ChevronRight className="h-4 w-4" />
                   </a>
                 </div>
               </div>
             </motion.div>
+          )}
+
+          {/* Loading State */}
+          {loading && (
+            <div className="flex justify-center items-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && (
+            <div className="bg-amber-50 dark:bg-amber-900/30 border-l-4 border-amber-600 p-4 mb-8 rounded-r-lg">
+              <p className="text-amber-800 dark:text-amber-200">{error}</p>
+            </div>
           )}
 
           {/* News Cards */}
@@ -363,80 +971,95 @@ const Reports = () => {
             animate="visible"
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
-            {filteredNews.length > 0 ? (
-              filteredNews.map((news) => (
-                <motion.div
-                  key={news.id}
-                  variants={itemVariants}
-                  className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden flex flex-col"
-                >
-                  <div className="p-6">
-                    <div className="flex items-start justify-between mb-3">
-                      <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                        news.impact === "high" ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300" :
-                        news.impact === "medium" ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300" :
-                        "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
-                      }`}>
-                        {news.impact === "high" ? "High Impact" : news.impact === "medium" ? "Medium Impact" : "Low Impact"}
-                      </span>
-                      <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full text-gray-600 dark:text-gray-300">
-                        {news.category}
-                      </span>
+            {!loading && filteredNews.length > 0
+              ? filteredNews.map((news) => (
+                  <motion.div
+                    key={news.id}
+                    variants={itemVariants}
+                    className="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-shadow overflow-hidden flex flex-col"
+                  >
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-3">
+                        <span
+                          className={`text-xs font-semibold px-2 py-1 rounded-full ${
+                            news.impact === "high"
+                              ? "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300"
+                              : news.impact === "medium"
+                              ? "bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300"
+                              : "bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300"
+                          }`}
+                        >
+                          {news.impact === "high"
+                            ? "High Impact"
+                            : news.impact === "medium"
+                            ? "Medium Impact"
+                            : "Low Impact"}
+                        </span>
+                        <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full text-gray-600 dark:text-gray-300">
+                          {news.category}
+                        </span>
+                      </div>
+
+                      <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-3">
+                        {news.title}
+                      </h2>
+
+                      <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
+                        {news.summary}
+                      </p>
+
+                      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                        <Newspaper className="h-4 w-4 mr-1" />
+                        <span className="mr-3">{news.source}</span>
+                        <Clock className="h-4 w-4 mr-1" />
+                        <span>{news.time}</span>
+                      </div>
                     </div>
-                    
-                    <h2 className="text-xl font-semibold text-gray-800 dark:text-white mb-3">
-                      {news.title}
-                    </h2>
-                    
-                    <p className="text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
-                      {news.summary}
-                    </p>
-                    
-                    <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
-                      <Newspaper className="h-4 w-4 mr-1" />
-                      <span className="mr-3">{news.source}</span>
-                      <Clock className="h-4 w-4 mr-1" />
-                      <span>{news.time}</span>
-                    </div>
-                  </div>
-                  
-                  <div className="mt-auto border-t border-gray-100 dark:border-gray-700 p-4 flex items-center justify-between">
-                    <a
-                      href={news.link}
-                      className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium flex items-center"
-                    >
-                      Read full article <ArrowRight className="h-4 w-4 ml-1" />
-                    </a>
-                    
-                    <div className="flex items-center space-x-2">
-                      <button 
-                        onClick={() => toggleSaved(news.id)}
-                        className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                          savedArticles.includes(news.id) ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-400'
-                        }`}
+
+                    <div className="mt-auto border-t border-gray-100 dark:border-gray-700 p-4 flex items-center justify-between">
+                      <a
+                        href={news.link}
+                        className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium flex items-center"
+                        target="_blank"
+                        rel="noopener noreferrer"
                       >
-                        <BookmarkPlus className="h-4 w-4" />
-                      </button>
-                      <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400">
-                        <Share2 className="h-4 w-4" />
-                      </button>
+                        Read full article{" "}
+                        <ArrowRight className="h-4 w-4 ml-1" />
+                      </a>
+
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={() => toggleSaved(news.id)}
+                          className={`p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                            savedArticles.includes(news.id)
+                              ? "text-indigo-600 dark:text-indigo-400"
+                              : "text-gray-400"
+                          }`}
+                        >
+                          <BookmarkPlus className="h-4 w-4" />
+                        </button>
+                        <button className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400">
+                          <Share2 className="h-4 w-4" />
+                        </button>
+                      </div>
                     </div>
+                  </motion.div>
+                ))
+              : !loading && (
+                  <div className="col-span-3 text-center py-12">
+                    <Newspaper className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                    <h3 className="text-xl font-medium text-gray-800 dark:text-white mb-2">
+                      No news found
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Try adjusting your search or filter criteria
+                    </p>
                   </div>
-                </motion.div>
-              ))
-            ) : (
-              <div className="col-span-3 text-center py-12">
-                <Newspaper className="h-12 w-12 mx-auto text-gray-400 mb-4" />
-                <h3 className="text-xl font-medium text-gray-800 dark:text-white mb-2">No news found</h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  Try adjusting your search or filter criteria
-                </p>
-              </div>
-            )}
+                )}
           </motion.div>
-          
+
           {/* View More Button */}
-          {filteredNews.length > 0 && (
+          {!loading && filteredNews.length > 0 && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}

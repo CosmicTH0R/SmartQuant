@@ -9,11 +9,10 @@ import {
   resendVerificationEmail,
   refreshToken,
   logout,
-  googleCallback, // Import your googleCallback function here
+  googleCallback, // Google callback for JWT handling
 } from "../controllers/authController.js";
-import { getProfile } from "../controllers/userController.js"; // Make a user controller
-import { authenticate } from "../middleware/authMiddleware.js"; // Import the authenticate middleware
-
+import { getProfile } from "../controllers/userController.js";
+import { authenticate } from "../middleware/authMiddleware.js";
 import passport from "passport";
 
 const router = express.Router();
@@ -45,14 +44,11 @@ router.post("/resend-verification", resendVerificationEmail);
 // Refresh JWT token
 router.post("/refresh-token", refreshToken);
 
-// Logout (optional)
+// Logout
 router.post("/logout", logout);
 
 // Get user profile
-router.get("/me", authenticate, (req, res) => {
-  res.status(200).json({ user: req.user });
-});
-
+router.get("/me", authenticate, getProfile);
 
 // Google login start
 router.get(
@@ -60,28 +56,15 @@ router.get(
   passport.authenticate("google", { scope: ["profile", "email"] })
 );
 
-// Callback route
+// Callback route for Google login
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/login", // Redirect on failure
-    session: false, // We don't use sessions here
+    failureRedirect: "http://localhost:5173/signin?error=login_failed",
+    session: false,
   }),
-  googleCallback // Use your googleCallback function
+  googleCallback
 );
-
-// redirect to Facebook
-// router.get('/api/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
-
-// // callback from Facebook
-// router.get('/api/auth/facebook/callback',
-//   passport.authenticate('facebook', { failureRedirect: '/signin' }),
-//   (req, res) => {
-//     // Send token or redirect
-//     const token = generateJWT(req.user); // your JWT logic
-//     res.redirect(`http://localhost:3000/dashboard?token=${token}`);
-//   }
-// );
 
 
 export default router;

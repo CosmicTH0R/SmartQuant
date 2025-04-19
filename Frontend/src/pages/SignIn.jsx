@@ -3,7 +3,7 @@ import { FiMail, FiLock } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { FaFacebookF, FaApple } from "react-icons/fa";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 
 const SignIn = () => {
@@ -11,19 +11,23 @@ const SignIn = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSignIn = async (e) => {
     e.preventDefault();
     setErrorMsg(""); // Reset error message
+    setIsLoading(true);
+    
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/signin", // Your login endpoint
+        "http://localhost:5000/api/auth/signin",
         { email, password },
         { withCredentials: true }
       );
+      
       if (res.data.success) {
-        navigate("/Explore"); // Redirect to Explore page on success
+        navigate("/explore"); // Redirect to Explore page on success
       }
     } catch (err) {
       if (err.response?.status === 404) {
@@ -33,16 +37,28 @@ const SignIn = () => {
       } else {
         setErrorMsg("An error occurred. Please try again later.");
       }
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  // Redirect to Google OAuth
+  // Redirect to Google OAuth with state parameter for CSRF protection
   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/google"; // Redirect to your Google auth route
+    // Create a random state value for CSRF protection
+    const state = Math.random().toString(36).substring(2);
+    // Store the state in localStorage to verify when the user returns
+    localStorage.setItem("oauthState", state);
+    
+    window.location.href = `http://localhost:5000/api/auth/google?state=${state}`;
   };
 
   const handleFacebookLogin = () => {
-    window.location.href = "http://localhost:5000/api/auth/facebook"; // Redirect to your Facebook auth route
+    // Create a random state value for CSRF protection
+    const state = Math.random().toString(36).substring(2);
+    // Store the state in localStorage to verify when the user returns
+    localStorage.setItem("oauthState", state);
+    
+    window.location.href = `http://localhost:5000/api/auth/facebook?state=${state}`;
   };
 
   return (
@@ -110,9 +126,10 @@ const SignIn = () => {
 
           <button
             type="submit"
+            disabled={isLoading}
             className="w-full bg-black text-white py-2 rounded-lg font-semibold hover:opacity-90 transition"
           >
-            Sign In
+            {isLoading ? "Signing In..." : "Sign In"}
           </button>
         </form>
 
@@ -136,19 +153,22 @@ const SignIn = () => {
           >
             <FaFacebookF size={20} />
           </button>
-          <button className="bg-black text-white p-2 rounded-full shadow hover:scale-105 transition">
+          <button 
+            className="bg-black text-white p-2 rounded-full shadow hover:scale-105 transition"
+            onClick={() => setErrorMsg("Apple sign in is not available yet")}
+          >
             <FaApple size={22} />
           </button>
         </div>
 
         <p className="text-center text-sm text-gray-500 dark:text-gray-300 mt-6">
           Don't have an account?{" "}
-          <a
-            href="/signup"
+          <Link
+            to="/signup"
             className="text-blue-600 dark:text-blue-400 hover:underline"
           >
             Sign Up
-          </a>
+          </Link>
         </p>
       </div>
     </div>

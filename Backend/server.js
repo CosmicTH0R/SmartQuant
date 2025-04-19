@@ -21,6 +21,7 @@ mongoose.connect(process.env.MONGODB_URI)
   .catch((err) => console.error('MongoDB connection error:', err));
 
 // Middleware
+app.use(cookieParser());
 app.use(morgan('dev')); // Logging middleware
 app.use(cors({
   origin: 'http://localhost:5173', // Replace with your frontend URL
@@ -28,7 +29,6 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 // Rate-limiting to avoid brute-force attacks
 const limiter = rateLimit({

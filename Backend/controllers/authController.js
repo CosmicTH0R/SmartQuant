@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import crypto from "crypto";
 // import sendEmail from '../utils/sendEmail.js';
 import { sendVerificationEmail } from "../utils/sendVerificationEmail.js";
+import { generateToken } from "../utils/jwt.js"; // correct the path as needed
 
 dotenv.config();
 
@@ -44,7 +45,7 @@ export const signup = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "Lax",
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -84,12 +85,12 @@ export const signin = async (req, res) => {
         .json({ success: false, message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Lax",
+      secure: true,
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -125,12 +126,12 @@ export const oauthLogin = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Lax",
+      secure: true,
+      sameSite: "None",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -211,56 +212,25 @@ export const resetPassword = async (req, res) => {
   }
 };
 
-// Logout controller (cookies + refresh tokens)
-
-export const logout = async (req, res) => {
-  try {
-    // 1. Get refresh token from cookie
-    const refreshToken = req.cookies?.refreshToken;
-
-    // 2. If no token, just clear cookie and return
-    if (!refreshToken) {
-      res.clearCookie("refreshToken", {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "None",
-      });
-      return res.status(200).json({ message: "Logged out successfully" });
-    }
-
-    // 3. Clear the refresh token cookie
-    res.clearCookie("refreshToken", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "Strict",
-    });
-
-    return res.status(200).json({ message: "Logout successful 🚀" });
-  } catch (error) {
-    console.error("Logout error:", error);
-    return res.status(500).json({ message: "Server error during logout 💥" });
-  }
-};
-
 export const refreshToken = async (req, res) => {
   try {
     const token = req.cookies?.refreshToken;
-
+    
     if (!token) {
       return res.status(401).json({ message: "Refresh token missing 😿" });
     }
-
+    
     jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
       if (err) {
         return res.status(403).json({ message: "Invalid refresh token ❌" });
       }
-
+      
       const accessToken = jwt.sign(
         { id: decoded.id, email: decoded.email },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "15m" } // Or however long you want
       );
-
+      
       return res.status(200).json({ accessToken });
     });
   } catch (error) {
@@ -268,6 +238,24 @@ export const refreshToken = async (req, res) => {
     return res.status(500).json({ message: "Something went wrong 💥" });
   }
 };
+
+
+export const logout = async (req, res) => {
+  try {
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,     
+      sameSite: "Lax",   
+      path: "/",  
+    });
+
+    return res.status(200).json({ message: "Logged out successfully 👋" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res.status(500).json({ message: "Server error during logout 💥" });
+  }
+};
+
 
 // Verify Email
 export const resendVerificationEmail = async (req, res) => {
@@ -345,19 +333,25 @@ export const verifyEmail = async (req, res) => {
   }
 };
 
-export const googleCallback = (req, res) => {
-  const user = req.user;
+export const googleCallback = async (req, res) => {
+  try {
+    console.log("🌐 Inside Google Callback");
+    console.log("req.user:", req.user);
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-    expiresIn: "1d",
-  });
+    const token = generateToken(req.user); // Your JWT generator util
+    console.log("🔑 Generated Token:", token);
+    // localhost setup — NOT secure
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: false, // localhost hai toh false
+      sameSite: "Lax", // safe for localhost
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
 
-  res.cookie("token", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // true in production
-    sameSite: "Lax",
-    maxAge: 24 * 60 * 60 * 1000, // 1 day
-  });
-
-  res.redirect(`http://localhost:5173/dashboard?token=${token}`);
+    console.log("✅ Cookie set, redirecting to dashboard");
+    res.redirect("http://localhost:5173/dashboard");
+  } catch (err) {
+    console.error("❌ Google Callback Error:", err);
+    res.redirect("http://localhost:5173/signin?error=login_failed");
+  }
 };

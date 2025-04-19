@@ -92,7 +92,7 @@ export default function AccountSummary() {
       {/* Add Cash button */}
       <button
         onClick={handleAddCashClick}
-        className="absolute bottom-4 right-4 bg-indigo-600 text-white text-sm font-semibold px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+        className="absolute bottom-4 right-4 bg-indigo-600 text-white text-sm font-semibold px-1 py-1 rounded-lg hover:bg-indigo-700 transition-colors"
       >
         Add Cash
       </button>
