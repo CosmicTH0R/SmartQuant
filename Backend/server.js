@@ -45,11 +45,13 @@ import stockRoutes from './routes/stockRoutes.js';
 import stockDetailRoutes from './routes/stockDetailRoutes.js';
 import resetPasswordRoutes from './routes/resetPasswordRoutes.js'; // Reset password route
 import './config/passport.js'; // Passport configuration
+import userRoutes from './routes/userRoutes.js'; // User routes
 
 app.use('/api/auth', authRoutes);
 app.use('/api/stocks', stockRoutes);
 app.use('/api/stocks-details', stockDetailRoutes);
 app.use('/api', resetPasswordRoutes); // Reset password route
+app.use('/api/user',userRoutes); // User routes);
 
 
 // Test Route
