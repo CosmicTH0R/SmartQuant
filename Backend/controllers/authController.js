@@ -85,7 +85,9 @@ export const signin = async (req, res) => {
         .json({ success: false, message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -126,7 +128,9 @@ export const oauthLogin = async (req, res) => {
       });
     }
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1d" });
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1d",
+    });
 
     res.cookie("token", token, {
       httpOnly: true,
@@ -215,22 +219,22 @@ export const resetPassword = async (req, res) => {
 export const refreshToken = async (req, res) => {
   try {
     const token = req.cookies?.refreshToken;
-    
+
     if (!token) {
       return res.status(401).json({ message: "Refresh token missing 😿" });
     }
-    
+
     jwt.verify(token, process.env.REFRESH_TOKEN_SECRET, (err, decoded) => {
       if (err) {
         return res.status(403).json({ message: "Invalid refresh token ❌" });
       }
-      
+
       const accessToken = jwt.sign(
         { id: decoded.id, email: decoded.email },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: "15m" } // Or however long you want
       );
-      
+
       return res.status(200).json({ accessToken });
     });
   } catch (error) {
@@ -239,14 +243,13 @@ export const refreshToken = async (req, res) => {
   }
 };
 
-
 export const logout = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: false,     
-      sameSite: "Lax",   
-      path: "/",  
+      secure: false,
+      sameSite: "Lax",
+      path: "/",
     });
 
     return res.status(200).json({ message: "Logged out successfully 👋" });
@@ -255,7 +258,6 @@ export const logout = async (req, res) => {
     return res.status(500).json({ message: "Server error during logout 💥" });
   }
 };
-
 
 // Verify Email
 export const resendVerificationEmail = async (req, res) => {
